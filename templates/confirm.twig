@@ -1,0 +1,262 @@
+{% extends "base.twig" %}
+{% block content %}
+
+<div id="reg-confirm">	
+<!-- 
+<cfif bFromPayFlow>
+	<div id="page-title">
+        Thank You for Your Payment!
+    </div>
+    
+    <div style="color: red; font-weight: bold; text-align: center;">
+        Please print this page for your records. 
+    </div>
+	<p>
+    	Your payment of <cfoutput>#sPaymentAmount#</cfoutput> has been processed by PayPal. 
+        The charges that appear on your credit card will be from the "Institute for Social Research".
+	</p>
+	<p class="registration-text">
+		Registration number: <cfoutput>#regInfo.confirm_num#</cfoutput>
+	</p>
+    
+    <p class="additionalInfo">
+        <form method="post" action="index.cfm">	
+            <input type="submit" value="Return to Course List" />
+        </form>
+    </p>
+-->
+{% if regInfo.PayMethod == "F" %}   <!--- Free for Fellowship --> 
+	<div id="page-title">
+        Thank You for Your Registration!
+    </div>
+    
+    <div style="color: red; font-weight: bold; text-align: center;">
+        Please print this page for your records. 
+    </div>
+        
+	<p class="registration-text">
+		Registration number: {{ regInfo.confirm_num }}
+	</p>
+	
+	<p>
+		<b>The registration number</b> <font color="FF0000"><b>does not indicate acceptance</b></font> 
+		into the course. Confirmation of registration and instructions will be sent after the 
+		registration form has been processed. Registration is not firm until you receive a confirmation 
+		email.
+	</p>
+{% else %}
+	{% if regInfo.cancelled_flag == "-1" %}
+    	<div id="page-title">
+            Registration Cancellation Request!
+        </div>
+        
+        <div style="color: red; font-weight: bold; text-align: center;">
+            Please print this page for your records. 
+        </div>	    
+        
+		<p>
+			Your cancellation request has been forwarded to JPSM. Cancellation online does not 
+            guarantee that fees will be refunded. You will be notified of your cancellation and 
+            payment status via email.
+		</p>
+	{% else %}
+      	<div id="page-title">
+            Thank You for Your Registration!
+        </div>
+        
+        <div style="color: red; font-weight: bold; text-align: center;">
+            Please print this page for your records. 
+        </div>
+    
+		<p class="registration-text">
+			Registration number: {{ regInfo.confirm_num  }}<br />
+            Course fee: ${{ regInfo.PayAmount | number_format(0) }}
+        </p>
+		
+		<p>
+			<b>The registration number</b> <font color="FF0000"><b>does not indicate acceptance</b></font> 
+			into the course. Confirmation of registration and instructions will be sent after the 
+			registration form has been processed. Registration is not firm until you receive a confirmation 
+			email.
+		</p>
+			
+		<p>
+			<b>Post-registration payment</b> can be done online by using your registration number. 
+            Please forward your registration number to the appropriate departments.
+		</p>
+		
+		<!-- PayMethod passed from prev form, and NOT the value pulled from database  -->
+		{% if PayMethod != "TF" %}
+            {% if courseInfo.course_status == "WL" and regInfo.BypassWaitList != 1 %}
+                <p style="font-weight: bold; color: red;">
+                    JPSM is currently not accepting payments online. Please contact JPSM concerning your registration.
+                </p>
+                
+                <p class="additionalInfo">
+                    <form method="post" action="https://projects.isr.umich.edu/jpsm/index.cfm">	
+                        <input type="submit" value="Return to Course List" />
+                    </form>
+                </p>
+            {% elseif courseInfo.stateid == "MI" %}
+            	<form method="post" name="myForm" action="/payflow">	
+                    <input type="submit" value="Make Payment" /> * JPSM uses PayPal for credit card processing.
+                    You will be redirected to PayPal site to enter your credit card info. 
+                    <cfoutput>		
+                    <input type="hidden" name="RegID" value="{{ regInfo.RegID }}" />
+                    <input type="hidden" name="ConfirmNum" value="{{ regInfo.confirm_num }}" />
+                    </cfoutput>
+                </form>  
+			{% elseif courseInfo.stateid == "MD" %}                
+                <p class="additionalInfo">
+                <form method="post" action="https://projects.isr.umich.edu/jpsm/index.cfm">	
+                    <input type="submit" value="Return to Course List" />
+                </form>
+                </p>  
+
+            {% endif %}
+        {% else %}        
+        	<p class="additionalInfo">
+                <form method="post" action="https://projects.isr.umich.edu/jpsm/index.cfm">	
+                    <input type="submit" value="Return to Course List" />
+                </form>
+            </p>
+        {% endif %}
+    {% endif %}
+{% endif %}    
+	
+<!--- Show Registartion Informations ---->
+<div style="padding-left: 25px;">
+	{% if regInfo.cancelled_flag == "-1" %}
+		<p class="CourseHeader" style="color: red;">
+			Registration Cancelled!
+		</p>
+	{% else %}	
+		<p class="CourseHeader">
+			Registration Information
+		</p>
+    {% endif %}    
+	
+	{% set sInstructors = courseInfo.instructor_1 %}
+	{% if courseInfo.instructor_2 %}
+	{% set sInstructors = sInstructors ~ ", " ~ courseInfo.instructor_2 %}
+	{% endif %}
+
+	{% if courseInfo.instructor_3 %}
+	{% set sInstructors = sInstructors ~ ", " ~ courseInfo.instructor_3 %}
+	{% endif %}
+
+	{% if courseInfo.instructor_4 %}
+	{% set sInstructors = sInstructors ~ ", " ~ courseInfo.instructor_4 %}
+	{% endif %}	
+	
+	<p>
+		<span class="heading2">Course:</span>
+		<p style="padding-left: 20px;">            
+        	{{ courseInfo.classdates }}<br>
+			{{ courseInfo.coursename }}<br>
+            {{ sInstructors }}<br>			
+			{{ courseInfo.facility }}, {{ courseInfo.location }}
+		</p>
+	</p>	
+		  
+	<p>
+        <span class="heading2">Registrant:</span>
+        <p style="padding-left: 20px;">
+        	{% if regInfo.Prefix %} {{ regInfo.Prefix }} {% endif %} {{ regInfo.fname }} {{ regInfo.mname }} {{ regInfo.lname }}<br>
+        	{% if regInfo.agency %} {{ regInfo.agency }}<br> {% endif %}
+        	{% if regInfo.dept_room %} {{ regInfo.dept_room }}<br> {% endif %}
+        	{% if regInfo.street1 %} {{ regInfo.street1 }}<br> {% endif %}
+        	{% if regInfo.street2 %} {{ regInfo.street2 }}<br> {% endif %}
+        	{{ regInfo.city }} {{ regInfo.state }} {{ regInfo.zip }}<br>
+        	{% if regInfo.country %} {{ regInfo.country }}<br> {% endif %}				
+        </p>
+        
+        <p style="padding-left: 20px;">
+        Phone: {{ regInfo.phone | phone }} {% if regInfo.ext %} &nbsp;&nbsp;Ext: {{ regInfo.ext }} {% endif %}
+        <br>
+        {% if regInfo.fax %}
+        Fax: {{ regInfo.fax | phone }}
+		<br>
+		{% endif %}
+        E-Mail: {{ regInfo.email }} <br>
+        Fee Type: {{ regInfo.StudentType }}
+        <br>
+        {% if regInfo.affiliation > 0 %}
+	         Sponsor/Affiliate: {{ regInfo.AffiliationName }}
+			<br>
+        {% endif %}    
+         Registration #: {{ regInfo.confirm_num }}
+        </p>
+
+	</p>	
+	
+	<p>
+		<span class="heading2">Payment:</span><br />
+        <p style="padding-left: 20px;">
+         Payment Amount: ${{ regInfo.PayAmount | number_format(0) }}
+		 <br>
+		 Payment Method: {{ regInfo.PaymentMethod }}
+        </p>
+	</p>
+    	 
+    <p>
+        <span class="heading2">Comments:</span>
+        <p style="padding-left: 20px;">{{ regInfo.comments }}</p>
+    </p>
+	<p>
+		<span class="heading2">Registration Fees:</span>
+		<p>
+			The registration fee is <b>${{ courseInfo.cost_full | number_format(0) }}</b> for participants,
+			<b>${{ courseInfo.cost_affiliate | number_format(0) }}</b> for sponsors/affiliates, and 
+			<b>${{ courseInfo.cost_student | number_format(0) }}</b> for full-time university students. Lunches 
+			and refreshments are included in the fee.  Registrants will be provided with a notebook 
+			containing detailed course notes.
+		</p>
+		
+			{% if courseInfo.EarlyDiscount == "1" and "now" | date('U') < courseInfo.EarlyDiscountDate.date | date('U') %}
+				<span class="heading2">Early Payment Discount</span>
+				<p>
+				Registrants will receive a fee discount if payment is made by 
+				<b>{{ courseInfo.EarlyDiscountDate.date | date("m/d/Y") }}</b>.
+				Please note that not all courses have a discounted rate. 
+				The early payment discounted fees are 
+				<b>${{ courseInfo.Cost_Full_EarlyDiscount | number_format(0) }}</b> for participants, 
+				<b>${{ courseInfo.Cost_Affiliate_EarlyDiscount | number_format(0) }}</b> for sponsors/affiliates, 
+				and <b>${{ courseInfo.Cost_Student_EarlyDiscount | number_format(0) }}</b> for full-time university students.
+				</p>			
+			{% endif %}		
+	</p>
+    <p>
+        <b>Online registration is required.</b> The web generated registration number does 
+        not indicate acceptance into the course. Confirmation of registration and 
+        instructions will be sent after the registration form has been processed. 
+        Registration is not firm until you receive a confirmation email. <b>Payment by credit 
+        card is required.</b> {% if courseInfo.stateID != "MD" %} Post registration payment may be done online using the 
+        registration number.{% endif %} Please note registration number. The registration deadline is 
+        <b>{{ courseInfo.deadline }}</b>. Payment is required by <b>{{ courseInfo.payduedate }}</b> or the registration 
+        will be	cancelled. Please notify JPSM as soon as possible if you need to cancel your 
+        registration. You will be fully reimbursed if you cancel by 
+        <b>{{ courseInfo.deadline_cancel_fullreimb }}</b>. Cancellation <b>{{ courseInfo.deadline_cancel_adminfee }}</b> 
+        will require a $100 administrative fee, the remainder will be reimbursed. 
+        Cancellation on or after <b>{{ courseInfo.deadline_cancel_noreimb }}</b> is subject to the full fee 
+        amount. Minority Fellowship essays and letters of recommendation, faxed 
+        or mailed to the address below, are due <b>{{ courseInfo.deadline_fellowship }}</b>. Fellowship 
+        winners will be notified <b>{{ courseInfo.notification_fellowship }}</b>. Questions for this course 
+        should be directed to:
+    </p>
+    <p>
+        <b>{{ contactInfo.person }}</b><br />                    
+        {{ ( contactInfo.institution | replace({ (",") : "<br />" }) ) | raw }}<br />
+        {{ contactInfo.address1 }}<br />
+        {% if contactInfo.address2 %} {{ contactInfo.address2 }} <br /> {% endif %}
+        {{ contactInfo.city }}, {{ contactInfo.state }} {{ contactInfo.zip }} 
+    </p>
+    <p>
+   
+        Phone: {{ contactInfo.phone | phone }}<br />
+        Fax: {{ contactInfo.fax | phone  }}<br />
+        Email: <a href="mailto:{{ contactInfo.email }}">{{ contactInfo.email }}</a>
+    </p>	
+	</div>
+</div>
+{% endblock %}

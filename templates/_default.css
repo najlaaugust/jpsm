@@ -1,0 +1,76 @@
+/* Impopotred from http://www.jpsm.org */
+BODY {
+	BORDER-RIGHT: #000000 1px dotted; BORDER-TOP: #000000 1px dotted; FONT-SIZE: 10pt; BACKGROUND: url(images/mesh_small.gif) #5555aa; MARGIN: 0px; BORDER-LEFT: #000000 1px dotted; COLOR: #000000; BORDER-BOTTOM: #000000 1px dotted; FONT-FAMILY: Arial, Tahoma, Lucida Sans
+}
+A {
+	COLOR: #5555aa
+}
+A:hover {
+	BACKGROUND: #5555aa; COLOR: #ffffff
+}
+.header {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; BACKGROUND: #882200; PADDING-BOTTOM: 3px; MARGIN-LEFT: 179px; BORDER-LEFT: #000000 1px dotted; COLOR: #ffffff; PADDING-TOP: 3px; BORDER-BOTTOM: #000000 1px dotted; TEXT-ALIGN: center
+}
+.header A:hover {
+	BACKGROUND: #ffffff; COLOR: #882200
+}
+.footer {
+	CLEAR: both; PADDING-RIGHT: 3px; BORDER-TOP: #000000 1px dotted; PADDING-LEFT: 3px; BACKGROUND: #888800; PADDING-BOTTOM: 3px; COLOR: #ffffff; PADDING-TOP: 3px; TEXT-ALIGN: center
+}
+.footer A:hover {
+	BACKGROUND: #ffffff; COLOR: #888800
+}
+.header A {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 3px; COLOR: #ffffff; PADDING-TOP: 3px
+}
+.footer A {
+	PADDING-RIGHT: 5px; PADDING-LEFT: 5px; PADDING-BOTTOM: 3px; COLOR: #ffffff; PADDING-TOP: 3px
+}
+#logo {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px
+}
+.menu {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-WEIGHT: bold; BACKGROUND: url(images/mesh_small.gif) #5555aa; FLOAT: left; PADDING-BOTTOM: 8px; WIDTH: 179px; COLOR: #ffffff; PADDING-TOP: 8px
+}
+.submenu {
+	BORDER-RIGHT: #000000 1px dotted; BORDER-TOP: #000000 1px dotted; DISPLAY: none; PADDING-LEFT: 1px; BACKGROUND: url(images/mesh_small.gif) #5555aa; LEFT: 180px; COLOR: #ffffff; BORDER-BOTTOM: #000000 1px dotted; POSITION: absolute
+}
+.menu A {
+	PADDING-RIGHT: 5px; DISPLAY: block; PADDING-LEFT: 5px; PADDING-BOTTOM: 3px; COLOR: #ffffff; PADDING-TOP: 3px; WHITE-SPACE: nowrap; TEXT-DECORATION: none
+}
+.submenu A {
+	PADDING-RIGHT: 5px; DISPLAY: block; PADDING-LEFT: 5px; PADDING-BOTTOM: 3px; COLOR: #ffffff; PADDING-TOP: 3px; WHITE-SPACE: nowrap; TEXT-DECORATION: none
+}
+.menu A:hover {
+	BACKGROUND: #ffffff; COLOR: #5555aa
+}
+.submenu A:hover {
+	BACKGROUND: #ffffff; COLOR: #5555aa
+}
+.content {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; BACKGROUND: #ffffff; PADDING-BOTTOM: 10px; MARGIN-LEFT: 179px; BORDER-LEFT: #000000 1px dotted; PADDING-TOP: 10px
+}
+.quickmenu {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 10px; BACKGROUND: #ffffff; FLOAT: right; PADDING-BOTTOM: 10px; MARGIN: 0px 0px 10px 10px; BORDER-LEFT: #ccccff 3px solid; WIDTH: 230px; PADDING-TOP: 0px; TEXT-ALIGN: left
+}
+.pageheading {
+	FONT-WEIGHT: bold; FONT-SIZE: 22pt; FONT-FAMILY: Book Antiqua, Arial, Tahoma, Courier New
+}
+.heading {
+	FONT-WEIGHT: bold; FONT-SIZE: 18pt; FONT-STYLE: italic; FONT-FAMILY: Book Antiqua, Arial, Tahoma, Courier New
+}
+.highlight {
+	COLOR: #883311
+}
+.highlight A {
+	COLOR: #883311
+}
+.highlight A:hover {
+	BACKGROUND: #883311; COLOR: #ffffff
+}
+.insetpic {
+	BORDER-RIGHT: #000000 1px solid; BORDER-TOP: #000000 1px solid; BORDER-LEFT: #000000 1px solid; WIDTH: 230px; BORDER-BOTTOM: #000000 1px solid; HEIGHT: 172px
+}
+.affiliate { 
+	color:blue; font-size:9pt; margin-bottom: 4px; display:block; 
+}

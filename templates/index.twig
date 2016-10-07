@@ -1,0 +1,32 @@
+{% extends "base.twig" %}
+{% block content %}
+
+<div id="confirmation-search">
+
+<form name="myForm" method="POST" action="/search">
+<table border="0" cellpadding="4" cellspacing="4">
+<tr>
+	<th>Enter registration number:</th>
+	<td><input type="text" name="ConfirmNum" maxlength="10" size="20" required="required" /></td>
+</tr>
+
+<tr>
+	<th>Enter the registrant's last name:</th>
+	<td><input type="text" name="LastName" maxlength="30" size="20" required="required" /></td>
+</tr>
+
+<tr>
+	<th></th>
+	<td><input type="submit" title="Submit" value=" Submit "  /></td>
+</tr>
+
+
+</table>
+
+
+</form>
+
+</div>
+{% endblock %}
+
+

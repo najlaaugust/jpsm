@@ -1,0 +1,36 @@
+<!--- Automatically post the page to PayFlow for credit card processing--->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+    <form name="myForm" method="POST" action="https://payflowlink.paypal.com">
+
+        <!-- The following fields are required: -->
+        <input type="hidden" 	name="LOGIN" 	value="umichisr">
+        <input type="hidden" 	name="PARTNER" 	value="paypal">
+        <input type="hidden"	name="TYPE" 	value="S">
+
+        <!--- USER1 variable is used to specify silent postback URL 
+        <input type="hidden" 	name="USER1" value="https://registrations.isr.umich.edu/siapp/paypalcallback" />--->
+		<input type="hidden" 	name="USER1" value="http://localhost:8080/paypalcallback" />
+
+        <!--- USER2 variable is used for paypal user to return 
+        <input type="hidden"	name="USER2" value="index.cfm" />--->
+
+        <!--- Revenue short code --->
+        <input type="hidden" 	name="COMMENT1"		value="{{ COMMENT1 }}"/><!-- Revenue shortcode --->
+
+        <!--- Additional info to be display in billing report i.e: name, descr, etc.	 --->
+        <input type="hidden" 	name="COMMENT2"		value="{{ COMMENT2 }}"/>
+
+        <input type="hidden" 	name="CUSTID"		value="{{ CUSTID }}" />
+        <!---<input type="hidden"	name="AMOUNT" 		value="{{ AMOUNT | number_format(2) }}" />-->
+        <input type="hidden"	name="AMOUNT" 		value="0.01" />
+        <input type="hidden" 	name="DESCRIPTION" 	value="{{ DESCRIPTION }}" />
+
+    	<!--- Send payment process to PayFlow --->
+        <script language="javascript">
+            document.myForm.submit();
+        </script>
+
+    </form>
+</body>
+</html>

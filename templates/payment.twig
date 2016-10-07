@@ -1,0 +1,119 @@
+{% extends "base.twig" %}
+{% block content %}
+
+<div id="page-title">
+        JPSM Short Courses - Online Registration
+</div>
+
+<div id="confirmation-found">
+
+{% if error %}
+
+	<p>
+		{{ error | raw }}
+	</p>
+	
+	<p><input type="button" value="  Back  " onclick="history.go(-1);"></p>
+
+{% else %}	
+
+<form name="myForm" action="/result" method="post">
+
+	<table border="0" cellspacing="8" cellpadding="0">
+	<thead>
+		<tr>
+        	<td colspan="2">
+                If this is the correct Registrant and course, please click the Continue button.
+        	</td>
+		</tr>
+	</thead>
+	
+	<tbody>
+		
+		<tr>
+			<th>Registration #:</th>
+			<td>{{ userInfo.confirm_num }}</td>
+		</tr>
+		
+		<tr>
+			<th>Registrant:</th>
+			<td>{{ userInfo.fname }} {{ userInfo.mname }} {{ userInfo.lname }}</td>
+		</tr>
+		{% set sInstructors = userInfo.Instructor_1 %}
+		{% if userInfo.Instructor_2 %}
+		{% set sInstructors = sInstructors ~ ", " ~ userInfo.Instructor_2 %}
+		{% endif %}
+
+		{% if userInfo.Instructor_3 %}
+		{% set sInstructors = sInstructors ~ ", " ~ userInfo.Instructor_3 %}
+		{% endif %}
+
+		{% if userInfo.Instructor_4 %}
+		{% set sInstructors = sInstructors ~ ", " ~ userInfo.Instructor_4 %}
+		{% endif %}
+
+		<tr>
+			<th>Course:</th>
+			<td>
+                <b>{{ userInfo.ClassDates }}</b><br>
+                {{ userInfo.CourseName }}<br>
+                {{ sInstructors }}<br>			
+                {{ userInfo.facility }}, {{ userInfo.Location }}
+			</td>
+		</tr>
+		
+		<tr>
+			<th>Course Fee:</th>
+			<td>
+			${{ userInfo.payamount | number_format(0) }}
+			<br><br>
+			{% if userInfo.EarlyDiscount == "1" and "now" | date('U') < userInfo.EarlyDiscountDate.date | date('U') %}
+				<div style="width:500px">
+				Registrants will receive a fee discount if payment is made by 
+				<b>{{ userInfo.EarlyDiscountDate.date | date("m/d/Y") }}</b>. 
+				Please note that not all courses have a discounted rate. 
+				The early payment discounted fees are 
+				<b>${{ userInfo.Cost_Full_EarlyDiscount | number_format(0) }}</b> for participants, 
+				<b>${{ userInfo.Cost_Affiliate_EarlyDiscount | number_format(0) }}</b> for sponsors/affiliates, 
+				and <b>${{ userInfo.Cost_Student_EarlyDiscount | number_format(0) }}</b> for full-time university students.
+				</div>
+			{% endif %}
+			
+			</td>
+		</tr>
+		
+		<tr>
+			<td></td>
+			<td>
+				<input type="submit" value="Continue" />                
+			</td>
+		</tr>
+		
+		<tr>
+			<td></td>
+			<td style="border-bottom: ##5555aa solid 2px;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td>
+				<br />
+				<p style="color: red; font-weight: bold;">
+					If this is not the correct Registrant and course, please click on the back button 
+					to re-enter the informations.
+				</p>
+
+				<p><input type="button" value="  Back  " onclick="history.go(-1);"></p>		
+			</td>
+		</tr>
+	</tbody>
+	</table>
+
+	<input type="hidden" name="RegType" value="postreg">
+	<input type="hidden" name="ConfirmNum" value="{{ userInfo.confirm_num }}">		
+	
+</cfoutput>
+</form>
+
+</div>
+{% endif %}
+{% endblock %}

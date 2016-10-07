@@ -1,0 +1,141 @@
+hr {color:#5555aa; }
+
+
+
+.page-error {font-weight: bold; color: red;}
+.heading2 {font-weight: bold; text-decoration: underline;}
+
+
+#page-title {
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	color: #000080;
+	/*border-bottom: #5555aa solid 2px;
+	padding-bottom: 2px; */
+}
+.sub-title {border-bottom: solid #5555aa 2px; 
+	padding-top: 2px; padding-bottom: 4px; text-transform: uppercase; vertical-align: middle; 
+	font-weight: bold;
+}
+
+#registration-form {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 13px;
+}
+#registration-form table {
+	border-collapse: collapse;
+	border-color: #111111;
+ 	text-align: Left;
+}
+#registration-form thead th {
+	background-color: #5555aa;              
+	font-size: 16px;
+	font-weight: bold;
+	color:#ffffff;
+	text-align: left;
+}
+#registration-form tbody th {
+	text-align: right;
+	color:#000000;
+	font-weight: normal;
+	vertical-align: top;
+	width: 100px !Important;
+}
+#registration-form tbody td {
+  	background-color:#ffffff;;                
+	text-align: left;
+	padding: 4;
+	margin: 0;
+	font-size: 12px;
+	color:#000000;
+	vertical-align: top;
+}
+#registration-form .required {
+  	font-size: 12px;
+  	font-weight: normal;
+  	color: #FF0000;
+	text-align: right;
+	width: 2px;
+}
+#registration-form .additionalInfo {
+  	font-size: 10px;
+  	color: #0000FF;
+	font-weight: normal;
+}
+#registration-form .additionalInfo2 {
+  	font-size: 11px;
+  	color: Red;
+	font-weight: normal;
+}
+#registration-form .indent {
+	font-weight: normal;
+	padding-left: 40px;
+}
+.registration-text {color: #5555aa; font-size: 120%; font-weight: bold;}
+
+
+#course-list .p {margin: 4px;}
+
+#course-list thead td {
+	font-weight: bold; 
+	background-color: White; 
+	color: #5555aa;
+	text-align: center;
+	vertical-align: top;
+	font-size: 24px;
+}
+#course-list thead th {
+	font-weight: bold; 
+	background-color: #5555aa; 
+	color: #ffffff;
+	text-transform: uppercase;
+	text-align: left;
+	vertical-align: top;
+}
+#course-list tbody td{
+	font-weight: normal; 
+	vertical-align: top;
+}
+#course-list .reg-column {
+	font-size: 85%;
+	font-weight: bold; 
+	color: #5555aa;
+	text-align: center;
+	vertical-align: middle;
+}
+#course-list .red {font-weight: bold; color: Red; }
+#course-list .additional-info {font-weight: normal; color: Red; font-size: 80%; }
+
+.payment-link {color: green; }
+.payment-link a:visited {color: green; }
+.payment-link a:hover {color: #5555aa; background-color: #000000; }
+
+.cancel-link {color: red; }
+.cancel-link a:visited {color: red; }
+.cancel-link a:hover {color: #5555aa; background-color: #000000; }
+
+.course-title {margin: 0; color: #5555aa; font-size: 130%; font-weight: bold;}
+.course-deadline {margin: 0; color: red;}
+.course-info {margin: 0;}
+
+#reg-confirm .CourseHeader { border-bottom: solid #5555aa 2px; border-top: solid #5555aa 2px; 
+	padding-top: 6px; padding-bottom: 6px; text-transform: uppercase; vertical-align: middle; 
+	font-weight: bold;
+}
+
+#reg-confirm th {font-weight: normal; vertical-align: top; text-align: left;}
+#reg-confirm td {font-weight: normal; vertical-align: top; text-align: left;}
+#reg-confirm .additionalInfo {font-size: 11px;	color: #0000FF;	font-weight: normal;}
+
+#confirmation-search th {text-align: left; font-weight: bold;}
+#confirmation-search td {text-align: left;}
+
+#confirmation-found .CourseHeader { border-bottom: solid #5555aa 2px; border-top: solid #5555aa 2px; 
+	padding-top: 6px; padding-bottom: 6px; text-transform: uppercase; vertical-align: middle; 
+	font-weight: bold;
+}
+#confirmation-found thead td {font-weight: bold; color: #5555aa; }
+#confirmation-found tbody th {font-weight: bold; text-align: left; vertical-align: top;}
+
+#fellowships li {list-style: decimal;}

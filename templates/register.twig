@@ -1,0 +1,537 @@
+{% extends "base.twig" %}
+{% block content %}
+
+<script src="/templates/register.js" type="text/javascript" language="javascript"></script>
+
+{% if sRegType=="postreg" %}
+    {% set formtitle="Post Registration Payment" %}
+    {% set buttontitle="Submit Payment" %}
+{% else %}
+    {% set formtitle="JPSM Short Courses - Online Registration" %}
+    {% set buttontitle="Submit Registration" %}
+{% endif %}
+
+<div id="page-title">
+	{{ formtitle }}
+</div>
+
+{% if courseInfo.webcourse == 0 %}
+	<p class="page-error">
+	Online registration not currently available for this course.  
+	Please check back soon.
+	</p>
+{% else %}
+
+<form name="myForm" method="POST" action="/register_process" onSubmit="return VerifyForm()">	
+<input type="hidden" name="StateID" value="{{ courseInfo.stateID }}">
+
+<table border="0" cellpadding="6" cellspacing="0" style="border-collapse: collapse" bordercolor="#888888" width="100%">
+<tr>
+ 	<td>
+    	<table border="0" cellpadding="6" cellspacing="0" bordercolor="#111111" width="100%">		
+        <tr>
+    		{% set sInstructors = courseInfo.instructor_1 %}
+    		{% if courseInfo.instructor_2 %}
+    		{% set sInstructors = sInstructors ~ ", " ~ courseInfo.instructor_2 %}
+    		{% endif %}
+    
+    		{% if courseInfo.instructor_3 %}
+    		{% set sInstructors = sInstructors ~ ", " ~ courseInfo.instructor_3 %}
+    		{% endif %}
+    
+    		{% if courseInfo.instructor_4 %}
+    		{% set sInstructors = sInstructors ~ ", " ~ courseInfo.instructor_4 %}
+    		{% endif %}
+
+            <td colspan="2" align="center" valign="top">
+            	<table border="1" bordercolor="##5555aa" cellpadding="0" cellspacing="0"  width="100%">
+                <tr>
+                	<td>
+                        <p class="course-title">{{ courseInfo.classdates }}</p>
+                        <p class="course-title">{{ courseInfo.coursename }}</p>
+                        <p class="course-info">{{ sInstructors }}</p>
+                        <p class="course-info">{{ courseInfo.facility }}, {{ courseInfo.location }}</p>
+                        <p class="course-deadline">Registration Deadline: {{ courseInfo.deadline }}</p>
+                  	</td>
+             	</tr>
+            	</table>
+			</td>
+		</tr>
+		
+		<tr>
+			<td colspan="2" align="center" valign="top">
+				<font face="Arial" color="FF0000" size="2"><b>Do not use acronyms or abbreviations</b></font><br>
+				<font face="Arial" color="FF0000" size="2"><b>* </b><font size="1"><b>Required Field</b></font></font>
+			</td>
+       	</tr>
+		  
+		</cfoutput> 		
+        </table>
+  
+  		{% if bDisplayPersonInfo %}
+		<table id="registration-form" border="0" cellpadding="4" cellspacing="0" width="100%">      
+			<thead>
+            <tr>
+              <th colspan="2" >Registrant Information:</th>
+            </tr>
+			</thead>
+
+			<tbody>
+            <tr>
+              	<th>Prefix:</th>
+             	<td>
+					  <select size="1" name="Prefix">
+							<option value="" selected>- select -</option>
+                            {% for prefix in prefixes %}
+								<option value="{{ prefix.pt_name }}">{{ prefix.pt_name }}</option>
+							{% endfor %}
+					  </select>
+				</td>
+            </tr>
+			<tr>				
+              	<th>First Name:</th>
+              	<td>
+                	<input type="text" name="fname" size="30" maxlength="30" required>
+                    <span class="required">*</span>
+                </td>
+            </tr> 
+            <tr>
+              	<th>Middle Name:</th>
+              	<td><input type="text" name="mname" size="30" maxlength="30"></td>
+            </tr> 
+			<tr>
+              	<th>Last Name:</th>
+              	<td>
+                	<input type="text" name="lname" size="30" maxlength="30" required>
+                    <span class="required">*</span>
+                </td>
+            </tr> 						
+						
+            <tr>
+              	<th>Agency/Bureau<br />Firm/School:<br /><span class="additionalInfo">(to appear on badge)</span></th>
+				<td>
+					<input type="text" name="agency" size="50" maxlength="200" required>
+                    <span class="required">*</span><br />
+					<span class="additionalInfo">Important - Please enter if applicable</span>
+				</td>
+            </tr>
+            <tr>
+             	<th>Department:</th>
+				<td>
+					<input type="text" name="dept_room" size="50" maxlength="200"><br />
+					<span class="additionalInfo">Important - Please enter if applicable</span>							
+				</td>
+            </tr>
+						
+			<tr>
+              	<th>Country:</th>
+              	<td>
+			  		<select name="country" size="1" onChange="changeState()">
+						<option value=""></option>							
+						{% for country in countries %}
+							<option value="{{ country.country_code }}" {% if country.country_code == "US" %}selected{% endif %}>{{ country.country_name }}</option>
+						{% endfor %}																
+					</select>
+				</td>
+            </tr>			
+								
+            <tr>
+              	<th>Street Address:</th>
+             	<td>
+                	<input type="text" name="street1" size="50" maxlength="100" required>
+                    <span class="required">*</span>
+                </td>
+            </tr>
+			
+            <tr>
+              	<th></th>
+              	<td><input type="text" name="street2" size="50" maxlength="100"></td>
+            </tr>
+			
+            <tr>
+              	<th>City:</th>
+              	<td>
+                	<input type="text" name="city" size="50" maxlength="100" required>
+                    <span class="required">*</span>
+                </td>
+            </tr>
+			
+            <tr>
+              	<th>State/Province:</th>
+              	<td>
+					<span id="span1" style="display:display;">
+					<select name="state" size="1">
+						<option value=""></option>							
+						{% for state in states %}
+							<option value="{{ state.state_id }}">{{ state.state_name }}</option>
+						{% endfor %}													
+					</select></span>
+					<span id="span2" style="display:none;"><input type="text" name="province" size="20" maxlength="20"></span>
+                    <span class="required">*</span>
+				</td>
+            </tr>	
+            <tr>
+              	<th>Postal Code:</th>
+              	<td>
+                	<input type="text" name="zip" size="14" maxlength="10" required>
+                    <span class="required">*</span>
+                </td>
+            </tr>	
+													
+            <tr>
+              	<th>Phone Number:</th>
+              	<td>
+					<input type="text" name="phone" size="14" maxlength="14" onKeyUp="checkNumber(myForm.phone);" required>
+					&nbsp;&nbsp;&nbsp;
+					Ext:&nbsp;<input type="text" name="ext" size="5" maxlength="10" onKeyUp="checkNumber(myForm.ext);">
+                    <span class="required">*</span>
+				</td>
+            </tr>
+            <tr>
+              	<th>Fax Number:</th>
+              	<td>
+				<input type="text" name="fax" size="14" maxlength="14" onKeyUp="checkNumber(myForm.fax);">
+				</td>
+            </tr>
+            <tr>
+              	<th>E-Mail Address:</th>
+              	<td>
+                	<input type="email" name="email" size="50" maxlength="100" required>
+                    <span class="required">*</span>
+                </td>
+            </tr>	
+																	
+            <tr>
+              	<th>Fee Type:</th>
+              	<td>
+					<select name="studenttype" onChange="SelectFee();" required>
+						<option value="">- select -</option>
+						{% for studenttype in studenttypes %}
+							<option value="{{ studenttype.ft_id }}">{{ studenttype.ft_name }}</option>
+						{% endfor %}
+					</select>&nbsp;&nbsp;
+					<select name="affiliation" style="display:none;">
+						<option value="">- select sponsor/affiliate -</option>
+						{% for affiliate in affiliates %}
+							<option value="{{ affiliate.aff_id }}">{{ affiliate.aff_name }}</option>
+						{% endfor %}
+					</select>
+					<span class="required">*</span>
+					<br />
+					
+					<span id="fellowshipInfo" class="additionalInfo2" style="display: none;">
+					The Joint Program in Survey Methodology strives to increase the number of <br />
+                    survey professionals from groups traditionally under-represented in the field. <br />
+                    As part of the effort, a limited number of competitive fellowships are available <br />
+                    for African-Americans, Hispanic Americans, Latinos, and Native American Indians for <br />
+                    the short course. The registrant must be a US citizen or permanent resident. <br />
+                    Applicants must complete: 1. The online registration form, 2. A letter of recommendation <br />
+                    and 3. A 500 word essay indicating the applicants background and how the course will <br />
+                    enhance their chosen career path. The fellowship covers the registration fee, materials <br />
+                    to distributed during class and group meals. <br />
+                    Please click <a href="https://projects.isr.umich.edu/jpsm/info.cfm#fellowships" target="_blank">here</a> 
+                    for additional information.
+					</span>
+					
+					<span id="affiliateInfo" class="additionalInfo2" style="display: none;">
+					To receive the discounted rate your agency must be listed on the sponsor/affiliate<br />
+					drop down box and you must me a regular employee of the sponsor/affiliate. If you do<br />
+					not qualify for the discounted rate then please change your fee type to "Participant".<br /> 
+					Inaccurate registrations will create delays. 
+					</span>
+				</td>
+            </tr>								
+
+			<tr><td colspan="2">&nbsp;</td></tr>
+			
+			</tbody>													
+        </table>
+    {% endif %}				
+
+    {% if bDisplayExp %}
+          <table id="registration-form" border="0" cellpadding="2" cellspacing="0" width="100%">
+		  	<thead>
+				<tr>
+					<th colspan="2">
+						The following information will guide the instructors about the experience mix of 
+						the students:
+					</th>
+				</tr>
+			</thead>
+			
+			<tbody>
+			<tr>
+				<td>
+					<table border="0" cellpadding="0" cellspacing="0" width="700">
+					<tr>
+						<td>1. How many years have you been in your present position?</td>
+						<td nowrap="nowrap">
+                        	<input type="number" name="PresPosLen" size="30" maxlength="10">
+                            &nbsp;<span class="additionalInfo">(Numeric value only)</span>
+                        </td>
+					</tr>
+					<tr>
+						<td class="indent">What is your present title</td>
+						<td><input type="text" name="PresTitle" size="30" maxlength="200"></td>
+					</tr>
+					<tr>
+						<td class="indent">How many years have you worked for your present employer (agency)?</td>
+						<td nowrap="nowrap">
+                        	<input type="number" name="PresEmpLen" size="30" maxlength="10">
+                            &nbsp;<span class="additionalInfo">(Numeric value only)</span>                        
+                        </td>
+					</tr>
+					<tr>
+						<td class="indent">What were you doing before that?</td>
+						<td>
+							<select size="1" name="PrevPos">
+								<option selected value="">- select -</option>
+								<option value="In school">In school</option>
+								<option value="career unrelated to surveys or economics">
+									Career unrelated to surveys or economics
+								</option>
+								<option value="Other">Other</option>
+							</select>
+					  </td>
+					</tr>
+					<tr>
+						<td>2. What is your highest level of education?</td>
+						<td>
+							<select size="1" name="EduLevel">
+								<option selected value="">- select -</option>
+								<option value="BA (BS)">BA (BS)</option>
+								<option value="MA (MS)">MA (MS)</option>
+								<option value="Other">Other</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td class="indent">If &quot;other&quot;, please describe:</td>
+						<td><input type="text" name="EduLevelOther" size="30" maxlength="200"></td>
+					</tr>
+					<tr>
+						<td class="indent">In what field?</td>
+						<td><input type="text" name="EduField" size="30" maxlength="200"></td>
+					</tr>
+					<tr>
+						<td class="indent">Have you taken any economics courses?</td>
+						<td><input type="text" name="EduEcon" size="30" maxlength="200"></td>
+					</tr>
+					<tr>
+						<td colspan="2">3. How will you access the web for material related to this course (if applicable)?</td>
+					</tr>
+					<tr>
+						<td  class="indent" colspan="2">
+							<input type="checkbox" name="WebAccess1" value="-1"> Employer's internet&nbsp;&nbsp;
+							<input type="checkbox" name="WebAccess2" value="-1"> Home cable or DSL connection&nbsp;&nbsp;
+							<input type="checkbox" name="WebAccess3" value="-1"> Home modem connection
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+			
+			
+			<tr><td colspan="2">&nbsp;</td></tr>
+			
+			</tbody>			
+          </table>
+	{% endif %}
+
+	<table id="registration-form" border="0" cellpadding="2" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th colspan="3">Payment Information:</th>
+			</tr>
+		</thead>
+		
+		<tbody>	
+		{% if bDisplayGeneral %}
+			<tr>
+				<th>Amount:</th>
+				<th class="required">*</th>
+				<td nowrap="nowrap" style="width: 100%">
+					<input type="radio" value="{{ courseInfo.cost_student }}" name="payamount">
+						Full-time Student (${{ courseInfo.cost_student | number_format(0) }})
+						{% if sRegType == "block" %}&nbsp;x <input type="text" name="numFT" size="2" readonly> = 
+							<input type="text" name="totFT" size="6" readonly>
+						{% endif %}
+					<input type="radio" value="{{ courseInfo.cost_affiliate }}" name="payamount">
+						Sponsor/Affiliate (${{ courseInfo.cost_affiliate | number_format(0) }})
+						{% if sRegType == "block" %}&nbsp;x <input type="text" name="numSP" size="2" readonly> = 
+							<input type="text" name="totSP" size="6" readonly>
+						{% endif %}			
+						<input type="radio" value="{{ courseInfo.cost_full }}" name="payamount">
+						Participants (${{ courseInfo.cost_full | number_format(0) }})
+						{% if sRegType == "block" %}&nbsp;x <input type="text" name="numP" size="2" readonly> = 
+							<input type="text" name="totP" size="6" readonly>
+						{% endif %}
+					{% if sRegType != "block" %}<input type="radio" value="0" name="payamount">
+						Fellowship ($0)
+					{% endif %}
+				</td>
+			</tr>
+			{% if courseInfo.earlydiscount == "1" and "now" | date('U') < courseInfo.earlydiscountdate.date | date('U') %}
+			<tr>
+			<td colspan=3 align=center bgcolor=ffffcc> 
+			<font color=blue><i>
+			Early Payment Discount before and on {{  courseInfo.earlydiscountdate.date | date("m/d/Y") }}
+			</i></font>
+			</td>
+			</tr>
+			<tr>
+				<th><i></i></th>
+				<th class="required">*</th>
+				<td nowrap="nowrap" style="width: 100%" valign=top><i><font color=blue>
+					<input type="radio" value="#courseinfo.cost_student_earlydiscount#" name="payamount" disabled>
+						Full-time Student ${{ courseInfo.cost_student_earlydiscount | number_format(0) }}
+						{% if sRegType == "block" %}&nbsp;x <input type="text" name="numFT" size="2" readonly> = 
+							<input type="text" name="totFT" size="6" readonly>
+						{% endif %}
+					<input type="radio" value="#courseinfo.cost_affiliate_earlydiscount#" name="payamount" disabled>
+						Sponsor/Affiliate ${{ courseInfo.cost_affiliate_earlydiscount | number_format(0) }}
+						{% if sRegType == "block" %}&nbsp;x <input type="text" name="numSP" size="2" readonly> = 
+							<input type="text" name="totSP" size="6" readonly>
+						{% endif %}			
+						<input type="radio" value="#courseinfo.cost_full_earlydiscount#" name="payamount" disabled>
+						Participants ${{ courseInfo.cost_full_earlydiscount | number_format(0) }}
+						{% if sRegType == "block" %}&nbsp;x <input type="text" name="numP" size="2" readonly> = 
+							<input type="text" name="totP" size="6" readonly>
+						{% endif %}
+					{% if sRegType != "block" %}<input type="radio" value="0" name="payamount" disabled>
+						Fellowship ($0)
+					{% endif %}
+					</font>
+					</i>
+					<br><br>
+				</td>
+			</tr>
+			{% endif %}
+
+            	
+		{% else %}	
+    	<tr>
+			<th>Amount:</th>
+			<th class="required"></th>
+        	<td>$<cfoutput>#confirmcost#</cfoutput></td>
+        </tr>			
+		{% endif %}	
+			
+		<tr>
+			<th>Method:</th>
+			<th class="required">*</th>
+			<td>
+				<input type="radio" name="paymethod" value="TF" {% if sRegType == "postreg" %}disabled{% endif %}> To Follow				
+				<input type="radio" name="paymethod" value="CH" {% if courseInfo.stateID == "MD" %}style="display: none;"{% else %}checked{% endif %}>{% if courseInfo.stateID != "MD"%}Pay Now (Credit card payment)&nbsp;&nbsp;{% endif %}               
+                <input type="radio" name="paymethod" value="F" {% if sRegType == "postreg" %}disabled{% endif %}>Fellowship
+			</td>
+		</tr>
+		
+		<tr>
+			<th></th>
+			<th></th>
+            {% if courseInfo.stateID != "MD" %}
+                <td class="additionalInfo2" style="padding-left: 30px;">
+                    Payment by credit card is required. Payment may be done post registration if 
+                    the "To Follow" box is checked. 
+                </td>
+          	{% else %}
+            	<td class="additionalInfo2" style="padding-left: 30px;">
+                    JPSM Maryland accepts payment by fax or by phone. 
+                </td>
+            {% endif %}
+		</tr>
+		
+		<tr><td colspan="3">&nbsp;</td></tr>
+		
+		</tbody>				
+	</table>
+
+	<cfoutput>
+	<table id="registration-form" border="0" cellpadding="2" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th colspan="2">{{ buttontitle }}:</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+	  	{% if bDisplayGeneral %}						
+			<tr>
+				<th align="left">Comments:</th>
+				<td style="width: 100%;">
+				  	<textarea rows="3" name="Comments" cols="50" wrap="virtual" style="width: 98%;"></textarea>
+				</td>
+			</tr>
+		{% endif %}	
+        		
+		<tr>
+        	<td colspan="2">
+        	<br>
+        	{% if courseInfo.earlydiscount == "1" %} 
+				<b>Early Payment Discount</b>
+				<br>
+				Registrants will receive a fee discount if payment is made by 
+				<b>{{ courseInfo.earlydiscountdate.date | date("m/d/Y") }}</b>.
+				Please note that not all courses have a discounted rate. 
+				The early payment discounted fees are 
+				<b>${{ courseInfo.cost_full_earlydiscount | number_format(0) }}</b> for participants, 
+				<b>${{ courseInfo.cost_affiliate_earlydiscount | number_format(0) }}</b> for sponsors/affiliates, 
+				and <b>${{ courseInfo.cost_student_earlydiscount | number_format(0) }}</b> for full-time university students.
+					<br><br>			
+			{% endif %}
+                <b>Online registration is required.</b> The web generated registration number does 
+                not indicate acceptance into the course. Confirmation of registration and 
+                instructions will be sent after the registration form has been processed. 
+                Registration is not firm until you receive a confirmation email. <b>Payment by credit 
+                card is required.</b> {% if courseInfo.stateID != "MD" %} Post registration payment may be done online using the 
+                registration number.{% endif %} Please note registration number. The registration deadline is 
+                <b>{{ courseInfo.deadline }}</b>. Payment is required by <b>{{ courseInfo.payduedate }}</b> or the registration 
+                will be	cancelled. Please notify JPSM as soon as possible if you need to cancel your 
+                registration. You will be fully reimbursed if you cancel by 
+                <b>{{ courseInfo.deadline_cancel_fullreimb }}</b>. Cancellation <b>{{ courseInfo.deadline_cancel_adminfee }}</b> 
+                will require a $100 administrative fee, the remainder will be reimbursed. 
+                Cancellation on or after <b>{{ courseInfo.deadline_cancel_noreimb }}</b> is subject to the full fee 
+                amount. Minority Fellowship essays and letters of recommendation, faxed 
+                or mailed to the address below, are due <b>{{ courseInfo.deadline_fellowship }}</b>. Fellowship 
+                winners will be notified <b>{{ courseInfo.notification_fellowship }}</b>. Questions for this course 
+                should be directed to:
+                <p>
+                    <b>{{ contactInfo.person }}</b><br />                    
+                    {{ ( contactInfo.institution | replace({ (",") : "<br />" }) ) | raw }}<br />
+                    {{ contactInfo.address1 }}<br />
+                    {% if contactInfo.address2 %} {{ contactInfo.address2 }} <br /> {% endif %}
+                    {{ contactInfo.city }}, {{ contactInfo.state }} {{ contactInfo.zip }} 
+                </p>
+                <p>
+               
+                    Phone: {{ contactInfo.phone | phone }}<br />
+                    Fax: {{ contactInfo.fax | phone  }}<br />
+                    Email: <a href="mailto:{{ contactInfo.email }}">{{ contactInfo.email }}</a>
+                </p>		
+				
+				<p>
+					<input type="submit" value="{{ buttontitle }}" name="B1">&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="reset" value="Clear Form" name="B2">
+				</p>							
+         	</td>
+      	</tr>
+		
+		</tbody>
+  	</table>
+	
+	</td>
+</tr>
+</table>
+
+<input type="hidden" name="RegType" value="{{ sRegType }}" />
+<input type="hidden" name="CourseID" value="{{ sCourseID }}" />
+<input type="hidden" name="CourseName" value="{{ courseInfo.coursename }}" />
+</cfoutput>
+
+
+</form>
+
+
+{% endif %}
+{% endblock %}
